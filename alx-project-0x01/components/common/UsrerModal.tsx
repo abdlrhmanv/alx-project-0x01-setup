@@ -1,43 +1,42 @@
-import React, { useState } from 'react';
-import { UserData } from '@/interfaces';
+import React, { useState } from "react";
+import { UserModalProps, UserProps } from "@/interfaces";
 
-const initialUser: UserData = {
-  id: Date.now(),
-  name: '',
-  username: '',
-  email: '',
+const initialUser: UserProps = {
+  id: 0,
+  name: "",
+  username: "",
+  email: "",
   address: {
-    street: '',
-    suite: '',
-    city: '',
-    zipcode: '',
+    street: "",
+    suite: "",
+    city: "",
+    zipcode: "",
     geo: {
-      lat: '',
-      lng: '',
+      lat: "",
+      lng: "",
     },
   },
-  phone: '',
-  website: '',
+  phone: "",
+  website: "",
   company: {
-    name: '',
-    catchPhrase: '',
-    bs: '',
+    name: "",
+    catchPhrase: "",
+    bs: "",
   },
 };
 
-const UserModal: React.FC<{ isOpen: boolean, onClose: () => void, onSave: (user: UserData) => void }> = ({ isOpen, onClose, onSave }) => {
-  const [user, setUser] = useState<UserData>(initialUser);
+const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
+  const [user, setUser] = useState<UserProps>(initialUser);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
   };
 
   const handleSubmit = () => {
-    onSave({ ...user, id: Date.now() });
+    onSubmit({ ...user, id: Date.now() }); // id وهمي
     onClose();
   };
-
-  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">

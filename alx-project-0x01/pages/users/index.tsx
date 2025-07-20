@@ -43,9 +43,8 @@ const Users: React.FC<{ users: UserProps[] }> = ({ users }) => {
         </div>
 
         <UserModal
-          isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          onSave={handleSave}
+          onSubmit={handleSave}
         />
       </main>
     </div>
