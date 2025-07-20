@@ -1,31 +1,55 @@
+// pages/users/index.tsx
 import UserCard from "@/components/common/UserCard";
 import Header from "@/components/layout/Header";
-import { UserProps } from "@/interfaces";
+import UserModal from "@/components/common/UsrerModal";
+import { UserProps, UserData } from "@/interfaces";
+import { useState } from "react";
 
 export async function getStaticProps() {
-    const response = await fetch("https://jsonplaceholder.typicode.com/users");
-    const posts = await response.json();
-  
-    return {
-      props: {
-        posts,
-      },
-    };
-  }
-
-  const Users: React.FC<{ posts: UserProps[] }> = ({ posts }) => {
-    return (
-      <div className="flex flex-col h-screen">
-        <Header />
-        <main className="p-4">
-          <div className="grid grid-cols-3 gap-2">
-            {posts.map((user) => (
-              <UserCard key={user.id} {...user} />
-            ))}
-          </div>
-        </main>
-      </div>
-    );
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  const users = await response.json();
+  return {
+    props: {
+      users,
+    },
   };
+}
+
+const Users: React.FC<{ users: UserProps[] }> = ({ users }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [allUsers, setAllUsers] = useState<UserProps[]>(users);
+
+  const handleSave = (user: UserData) => {
+    setAllUsers([...allUsers, user]);
+  };
+
+  return (
+    <div className="flex flex-col h-screen">
+      <Header />
+      <main className="p-4">
+        <div className="flex justify-end mb-4">
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded-md"
+            onClick={() => setModalOpen(true)}
+          >
+            Add User
+          </button>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          {allUsers.map((user, key) => (
+            <UserCard key={key} {...user} />
+          ))}
+        </div>
+
+        <UserModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onSave={handleSave}
+        />
+      </main>
+    </div>
+  );
+};
 
 export default Users;
