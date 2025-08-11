@@ -34,7 +34,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    onSubmit({ ...user, id: Date.now() }); // id وهمي
+    onSubmit({ ...user, id: Date.now() });
     onClose();
   };
 

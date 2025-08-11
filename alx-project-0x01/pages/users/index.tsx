@@ -1,8 +1,8 @@
 // pages/users/index.tsx
 import UserCard from "@/components/common/UserCard";
 import Header from "@/components/layout/Header";
-import UserModal from "@/components/common/UsrerModal";
-import { UserProps, UserData } from "@/interfaces";
+import UserModal from "@/components/common/UserModal";
+import { UserProps } from "@/interfaces";
 import { useState } from "react";
 
 export async function getStaticProps() {
@@ -19,8 +19,9 @@ const Users: React.FC<{ users: UserProps[] }> = ({ users }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [allUsers, setAllUsers] = useState<UserProps[]>(users);
 
-  const handleSave = (user: UserData) => {
+  const handleSave = (user: UserProps) => {
     setAllUsers([...allUsers, user]);
+    setModalOpen(false);
   };
 
   return (
@@ -42,10 +43,12 @@ const Users: React.FC<{ users: UserProps[] }> = ({ users }) => {
           ))}
         </div>
 
-        <UserModal
-          onClose={() => setModalOpen(false)}
-          onSubmit={handleSave}
-        />
+        {modalOpen && (
+          <UserModal
+            onClose={() => setModalOpen(false)}
+            onSubmit={handleSave}
+          />
+        )}
       </main>
     </div>
   );
